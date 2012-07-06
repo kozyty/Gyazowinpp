@@ -834,8 +834,9 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 	std::ostringstream	buf;	// 送信メッセージ
 	std::string			idStr;	// ID
 
-	LPCWSTR lpwcUploadServer;	// アップロード先サーバ
-	LPCWSTR lpwcUploadPath;		// アップロード先パス
+	LPCWSTR UploadServer;	// アップロード先サーバ
+	LPCWSTR UploadPath;		// アップロード先パス
+	int UploadPort; 		// アップロード先ポート
 
 	LPCWSTR lpwcId;			// 認証用ID
 	LPCWSTR lpwcPassword;	// 認証用パスワード
@@ -896,14 +897,19 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 
 	// アップロード先
 	if (g_Settings.count(L"upload_server")) {
-		lpwcUploadServer = g_Settings[L"upload_server"].c_str();
+		UploadServer = g_Settings[L"upload_server"].c_str();
 	}else{
-		lpwcUploadServer = L"gyazo.com";
+		UploadServer = L"gyazo.com";
 	}
 	if (g_Settings.count(L"upload_path")) {
-		lpwcUploadPath = g_Settings[L"upload_path"].c_str();
+		UploadPath = g_Settings[L"upload_path"].c_str();
 	}else{
-		lpwcUploadPath = L"/upload.cgi";
+		UploadPath = L"/upload.cgi";
+	}
+	if (g_Settings.count(L"upload_port")) {
+		UploadPort = _ttoi(g_Settings[L"upload_port"].c_str());
+	}else{
+		UploadPort = INTERNET_DEFAULT_HTTP_PORT;
 	}
 
 	// 認証データ準備
@@ -943,7 +949,7 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 
 	// 接続先
 	HINTERNET hConnection = InternetConnect(hSession, 
-		lpwcUploadServer, 1010,
+		UploadServer, UploadPort,
 		lpwcId, lpwcPassword, INTERNET_SERVICE_HTTP, 0, NULL);
 	if(NULL == hSession) {
 		MessageBox(hwnd, _T("Cannot initiate connection"),
@@ -953,7 +959,7 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 
 	// 要求先の設定
 	HINTERNET hRequest    = HttpOpenRequest(hConnection,
-		_T("POST"), lpwcUploadPath, NULL,
+		_T("POST"), UploadPath, NULL,
 		NULL, NULL, dwFlags, NULL);
 	if(NULL == hSession) {
 		MessageBox(hwnd, _T("Cannot compose post request"),
