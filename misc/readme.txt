@@ -1,3 +1,13 @@
+gyazoiwnp by kozyty
+
+tyoroさんの拡張を利用して .ini で PORT指定できるようにしました。
+ライセンスはgyazowin+に準拠します。
+
+以下、gyazowinpの添付readmeままです。
+
+2012 07/06
+------------------
+
 gyazoiwnp by tyoro
 
 NVさんのgyazowin+の拡張をtnjの最新ソースに適用したものです。

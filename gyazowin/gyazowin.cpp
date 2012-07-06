@@ -943,7 +943,7 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 
 	// ê⁄ë±êÊ
 	HINTERNET hConnection = InternetConnect(hSession, 
-		lpwcUploadServer, INTERNET_DEFAULT_HTTP_PORT,
+		lpwcUploadServer, 1010,
 		lpwcId, lpwcPassword, INTERNET_SERVICE_HTTP, 0, NULL);
 	if(NULL == hSession) {
 		MessageBox(hwnd, _T("Cannot initiate connection"),
